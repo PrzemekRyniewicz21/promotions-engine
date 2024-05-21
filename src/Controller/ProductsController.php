@@ -58,13 +58,14 @@ class ProductController extends AbstractController
             date_create_immutable($lowestPriceEnquiry->getRequestDate()),
         );
 
-        dd($promotions);
+        // dd($promotions);
 
         // 2. Przekazanie Enquiry do filtra promocji, oraz promocji, ktore maja zostac apply do naszego enquiry
-        $modifiedEnquiry = $promotionsHandler->apply($lowestPriceEnquiry, $promotions);
+        $modifiedEnquiry = $promotionsHandler->apply($lowestPriceEnquiry, ...$promotions);
 
 
         $reponse = $serializer->serialize($modifiedEnquiry, 'json');
-        return new Response($reponse, 200);
+
+        return new Response($reponse, 200, ['Content-Type' => 'application/json']);
     }
 }

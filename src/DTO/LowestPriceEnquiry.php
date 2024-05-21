@@ -3,9 +3,11 @@
 namespace App\DTO;
 
 use App\Entity\Product;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 class LowestPriceEnquiry implements PromotionEnquiryInterface
 {
+    #[Ignore]
     private ?Product $product;
 
     private ?int $quantity;
@@ -132,7 +134,7 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
     /**
      * Get the value of discountPrice
      */
-    public function getDiscountPrice()
+    public function getDiscountedPrice()
     {
         return $this->discountPrice;
     }
@@ -189,10 +191,15 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
         return $this;
     }
 
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
-    }
+    // uzywamy symfony serializer, so i commented it out
+    // Implementujemy PromotionEnquiryInterface rozszerzony JsonSerializable
+    // JsonSerializable wymaga od nas implementacji jsonSerialize(),
+    // wiec usuwamy to rozszrzenie z interfejsu
+
+    // public function jsonSerialize()
+    // {
+    //     return get_object_vars($this);
+    // }
 
     /**
      * Get the value of product
