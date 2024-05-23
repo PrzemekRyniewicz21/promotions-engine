@@ -3,6 +3,7 @@
 namespace App\Tests\Unit;
 
 use App\DTO\LowestPriceEnquiry;
+use App\Entity\Product;
 use App\Entity\Promotion;
 use App\Filter\LowestPriceFilter;
 use App\Tests\ServiceTestCase;
@@ -14,7 +15,12 @@ class LowestPriceFilterTest extends ServiceTestCase
     {
 
         // Given
+        $product = new Product();
+        $product->setPrice(100);
+
         $enquiry = new LowestPriceEnquiry();
+        $enquiry->setProduct($product);
+        $enquiry->setQuantity(5);
 
         $promotions = $this->promotionsProvider();
 
@@ -27,7 +33,7 @@ class LowestPriceFilterTest extends ServiceTestCase
 
         // Then
         $this->assertSame(100, $filteredEnquiry->getPrice());
-        $this->assertSame(50, $filteredEnquiry->getDiscountedPrice());
+        $this->assertSame(250, $filteredEnquiry->getDiscountedPrice());
         $this->assertSame('BLACK FRIDAY PROMOCJA', $filteredEnquiry->getPromotionName());
     }
 
