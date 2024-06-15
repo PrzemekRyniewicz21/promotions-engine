@@ -15,10 +15,11 @@ class DateRangeMultiplier implements PriceModifierInterface
 
         // dd($requestDate, $from, $to);
 
+
         if (!($requestDate >= $from && $requestDate <= $to)) {
             return $price * $quantity;
         }
-
-        return ($price * $quantity) * $promotion->getAdjustment();
+        // dd(($price * $quantity) * $promotion->getAdjustment());
+        return intval(($price * $quantity) * $promotion->getAdjustment());
     }
 }

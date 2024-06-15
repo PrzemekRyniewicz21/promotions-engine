@@ -2,11 +2,20 @@
 
 namespace App\Filter\Modifiers;
 
-class FixedPrice extends PriceModifierInterface
+use App\Entity\Promotion;
+use App\DTO\PromotionEnquiryInterface;
+
+class FixedPrice implements PriceModifierInterface
 {
     public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquriry): int
     {
-        // sprawdzmy czy 
-        return 1;
+        $code = $promotion->getCriteria()['code'];
+        $enquriry_code = $enquriry->getVoucherCode();
+
+        if ($code === $enquriry_code) {
+            return $promotion->getAdjustment() * $quantity;
+        }
+
+        return $price * $quantity;
     }
 }
