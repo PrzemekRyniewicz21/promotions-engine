@@ -5,7 +5,7 @@ namespace App\Filter\Modifiers;
 use App\Entity\Promotion;
 use App\DTO\PromotionEnquiryInterface;
 
-class FixedPrice implements PriceModifierInterface
+class FixedPriceModifier implements PriceModifierInterface
 {
     public function modify(int $price, int $quantity, Promotion $promotion, PromotionEnquiryInterface $enquriry): int
     {

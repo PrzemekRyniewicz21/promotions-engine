@@ -3,9 +3,11 @@
 namespace App\Tests\Unit;
 
 use App\DTO\LowestPriceEnquiry;
+use App\Entity\Product;
 use App\Entity\Promotion;
 use App\Filter\Modifiers\DateRangeMultiplier;
-use App\Filter\Modifiers\FixedPrice;
+use App\Filter\Modifiers\FixedPriceModifier;
+use App\Filter\Modifiers\PairOfItemsModifier;
 use App\Tests\ServiceTestCase;
 
 class ModifiersTest extends ServiceTestCase
@@ -51,12 +53,34 @@ class ModifiersTest extends ServiceTestCase
         ]);
         $promotion->setType('fixed_price_voucher');
 
-        $fixedPriceModifier = new FixedPrice();
+        $fixedPriceModifier = new FixedPriceModifier();
 
         // When
         $fixedPrice = $fixedPriceModifier->modify(200, 5, $promotion, $enquiry);
 
         // Then
         $this->assertEquals(500, $fixedPrice);
+    }
+
+    public function test_pair_of_items_modifier_modifies_price_correctly()
+    {
+        // Given
+        $enquiry = new LowestPriceEnquiry();
+
+        // dd($enquiry);
+
+
+        $promotion = new Promotion();
+        $promotion->setName("TWO_IN_PRICE_OF_ONE");
+        $promotion->setAdjustment(0.5);
+        $promotion->setType('pair_of_items_multiplier');
+
+        $paitOfItemsMultiplier = new PairOfItemsModifier();
+
+        // When
+        $price = $paitOfItemsMultiplier->modify(200, 5, $promotion, $enquiry);
+
+        // Then
+        $this->assertEquals(600, $price);
     }
 }
