@@ -30,17 +30,16 @@ class LowestPriceFilterTest extends ServiceTestCase
 
         // When
         $filteredEnquiry = $lowePriceFilter->apply($enquiry, ...$promotions);
-
         // Then
-
-        $this->assertSame(100, $filteredEnquiry->getPrice());
-        $this->assertSame(250, $filteredEnquiry->getDiscountedPrice());
-        $this->assertSame('BLACK FRIDAY PROMOCJA', $filteredEnquiry->getPromotionName());
+        $this->assertSame(500, $filteredEnquiry->getPrice());
+        $this->assertSame(100, $filteredEnquiry->getDiscountedPrice());
+        $this->assertSame('LETNIE PROMOCJE', $filteredEnquiry->getPromotionName());
     }
 
     public function promotionsProvider(): array
     {
         $promotion1 = new Promotion();
+        $promotion1->setId(2);
         $promotion1->setName('LETNIE PROMOCJE');
         $promotion1->setAdjustment(0.2);
         $promotion1->setCriteria([
@@ -50,6 +49,7 @@ class LowestPriceFilterTest extends ServiceTestCase
         $promotion1->setType('date_range_multiplier');
 
         $promotion2 = new Promotion();
+        $promotion1->setId(1);
         $promotion2->setName('DWA W CENIE JEDNEGO');
         $promotion2->setAdjustment(0.5);
         $promotion2->setCriteria([
@@ -58,6 +58,7 @@ class LowestPriceFilterTest extends ServiceTestCase
         $promotion2->setType('pair_of_items_modifier');
 
         $promotion3 = new Promotion();
+        $promotion1->setId(4);
         $promotion3->setName('VOUCHER 1234');
         $promotion3->setAdjustment(20);
         $promotion3->setCriteria([

@@ -5,7 +5,7 @@ namespace App\DTO;
 use App\Entity\Product;
 use Symfony\Component\Serializer\Annotation\Ignore;
 
-class LowestPriceEnquiry implements PromotionEnquiryInterface
+class LowestPriceEnquiry implements PriceEnquiryInterface
 {
     #[Ignore]
     private ?Product $product;
@@ -34,7 +34,7 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
     /**
      * Get the value of quantity
      */
-    public function getQuantity()
+    public function getQuantity(): ?int
     {
         return $this->quantity;
     }
@@ -144,9 +144,9 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
      *
      * @return  self
      */
-    public function setDiscountPrice($discountPrice)
+    public function setDiscountPrice($dPrice)
     {
-        $this->discountPrice = $discountPrice;
+        $this->discountPrice = $dPrice;
 
         return $this;
     }
@@ -164,11 +164,9 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
      *
      * @return  self
      */
-    public function setPromotionId($promotionId)
+    public function setPromotionId(int $promotionId): void
     {
         $this->promotionId = $promotionId;
-
-        return $this;
     }
 
     /**
@@ -184,11 +182,9 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
      *
      * @return  self
      */
-    public function setPromotionName($promotionName)
+    public function setPromotionName(string $promotionName): void
     {
         $this->promotionName = $promotionName;
-
-        return $this;
     }
 
     // uzywamy symfony serializer, so i commented it out

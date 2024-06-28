@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Cache\PromotionCache;
 use App\DTO\LowestPriceEnquiry;
 use App\DTO\PromotionEnquiryInterface;
 use App\Entity\Promotion;
@@ -16,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class ProductController extends AbstractController
 {
@@ -32,6 +35,7 @@ class ProductController extends AbstractController
         int $id,
         DTOSerializer $serializer,
         PromotionsHandlerInterface $promotionsHandler,
+        PromotionCache $promotionCache,
     ): Response {
 
         if ($request->headers->has('force_fail')) {
@@ -43,22 +47,13 @@ class ProductController extends AbstractController
 
 
         // 1. Deserializacja danych json w obiekt EnquiryDTO
-        /** @var LowestPriceEnquiry $lowestPriceEnquiry */
         $lowestPriceEnquiry = $serializer->deserialize($request->getContent(), LowestPriceEnquiry::class, 'json');
 
         $product = $this->repository->find($id); // TODO obsluga przypadku braku znalezienia produktu
 
         $lowestPriceEnquiry->setProduct($product);
 
-        // var_dump($lowestPriceEnquiry->getRequestDate());
-        // dd(date_create_immutable($lowestPriceEnquiry->getRequestDate()));
-
-        $promotions = $this->entityMenager->getRepository(Promotion::class)->getValidPromotionsForProduct(
-            $product,
-            date_create_immutable($lowestPriceEnquiry->getRequestDate()),
-        );
-
-        // dd($promotions);
+        $promotions = $promotionCache->findValidPromotionForProduct($product, $lowestPriceEnquiry->getRequestDate());
 
         // 2. Przekazanie Enquiry do filtra promocji, oraz promocji, ktore maja zostac apply do naszego enquiry
         $modifiedEnquiry = $promotionsHandler->apply($lowestPriceEnquiry, ...$promotions);
