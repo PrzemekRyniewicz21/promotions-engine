@@ -21,7 +21,7 @@ class PromotionCache
 
             $item->expiresAfter(1800); // 30min
 
-            // var_dump("cache-miss");
+            var_dump("cache-miss");
 
             return  $this->promotionRepository->getValidPromotionsForProduct(
                 $product,
