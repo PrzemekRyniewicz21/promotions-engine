@@ -26,4 +26,19 @@ services:
     App\Controller\ProductController:
         autowire: true
         autoconfigure: true
+<<<<<<< HEAD
+=======
+    
+    App\EventSubscriber\DtoSubscriber:
+        tags:
+            - { name: 'kernel.event_subscriber' }
+    
+    App\EventListener\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: exceptionHandler}
+
+
+    App\Service\Logger\DebugLogger:
+        public: true
+>>>>>>> dev
 

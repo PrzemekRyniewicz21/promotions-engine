@@ -4,20 +4,38 @@ namespace App\DTO;
 
 use App\Entity\Product;
 use Symfony\Component\Serializer\Annotation\Ignore;
+<<<<<<< HEAD
 
 class LowestPriceEnquiry implements PromotionEnquiryInterface
+=======
+use Symfony\Component\Validator\Constraints as Assert;
+
+class LowestPriceEnquiry implements PriceEnquiryInterface
+>>>>>>> dev
 {
     #[Ignore]
     private ?Product $product;
 
+<<<<<<< HEAD
+=======
+    #[Assert\NotBlank]
+    #[Assert\Positive]
+>>>>>>> dev
     private ?int $quantity;
 
     private ?string $requestLocation;
 
     private ?string $voucherCode;
 
+<<<<<<< HEAD
     private ?string $requestDate;
 
+=======
+    #[Assert\NotBlank]
+    private ?string $requestDate;
+
+    #[Assert\Positive]
+>>>>>>> dev
     private ?int $price;
 
     private ?int $discountPrice;
@@ -34,7 +52,11 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
     /**
      * Get the value of quantity
      */
+<<<<<<< HEAD
     public function getQuantity()
+=======
+    public function getQuantity(): ?int
+>>>>>>> dev
     {
         return $this->quantity;
     }
@@ -144,9 +166,15 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
      *
      * @return  self
      */
+<<<<<<< HEAD
     public function setDiscountPrice($discountPrice)
     {
         $this->discountPrice = $discountPrice;
+=======
+    public function setDiscountPrice($dPrice)
+    {
+        $this->discountPrice = $dPrice;
+>>>>>>> dev
 
         return $this;
     }
@@ -164,11 +192,17 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
      *
      * @return  self
      */
+<<<<<<< HEAD
     public function setPromotionId($promotionId)
     {
         $this->promotionId = $promotionId;
 
         return $this;
+=======
+    public function setPromotionId(int $promotionId): void
+    {
+        $this->promotionId = $promotionId;
+>>>>>>> dev
     }
 
     /**
@@ -184,11 +218,17 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
      *
      * @return  self
      */
+<<<<<<< HEAD
     public function setPromotionName($promotionName)
     {
         $this->promotionName = $promotionName;
 
         return $this;
+=======
+    public function setPromotionName(string $promotionName): void
+    {
+        $this->promotionName = $promotionName;
+>>>>>>> dev
     }
 
     // uzywamy symfony serializer, so i commented it out

@@ -40,6 +40,14 @@ class Promotion
         return $this->id;
     }
 
+<<<<<<< HEAD
+=======
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+
+>>>>>>> dev
     public function getName(): ?string
     {
         return $this->name;
