@@ -54,7 +54,9 @@
 # Database
 /mysql
 
+# Symfony executable
 symfony.exe
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
