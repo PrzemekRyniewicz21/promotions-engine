@@ -7,6 +7,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ServiceException extends HttpException
 {
+
     private AbstractExceptionData $exceptionData;
     public function __construct(AbstractExceptionData $exceptionData)
     {

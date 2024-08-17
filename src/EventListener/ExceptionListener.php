@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Service\Exceptions\Data\ExceptionPayloadData;
 use App\Service\Exceptions\ServiceException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -12,19 +13,20 @@ class ExceptionListener
     // public function onKernelException(ExceptionEvent $event): void
     public function exceptionHandler(ExceptionEvent $event): void
     {
-
         $exception = $event->getThrowable();
+        // dd($exception);
 
-        $object = $exception->getExceptionPayloadData();
-
-        $response = new JsonResponse($object->toArray());
-
-
-        if ($exception instanceof HttpExceptionInterface) {
-            $response->setStatusCode($exception->getStatusCode());
+        if ($exception instanceof ServiceException) {
+            $exceptionPayloadData = $exception->getExceptionPayloadData();
         } else {
-            $response->setStatusCode(500);
+
+            $statusCode = $exception->getCode();
+            $msg = $exception->getMessage();
+
+            $exceptionPayloadData = new ExceptionPayloadData($statusCode, $msg);
         }
+
+        $response = new JsonResponse($exceptionPayloadData->toArray());
 
         $event->setResponse($response);
     }

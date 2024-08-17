@@ -11,6 +11,7 @@ use App\Repository\ProductRepository;
 use App\Repository\PromotionRepository;
 use App\Service\Serializer\DTOSerializer;
 use Doctrine\ORM\EntityManagerInterface;
+use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,8 +27,7 @@ class ProductController extends AbstractController
     public function __construct(
         private ProductRepository $repository,
         private EntityManagerInterface $entityMenager,
-    ) {
-    }
+    ) {}
 
     #[Route('/products/{id}/lowest-price', name: 'lowest-price', methods: ['POST'])]
     public function lowestPrice(
@@ -37,6 +37,8 @@ class ProductController extends AbstractController
         PromotionsHandlerInterface $promotionsHandler,
         PromotionCache $promotionCache,
     ): Response {
+
+        // throw new JsonException('JSON ERROR', 404);
 
         if ($request->headers->has('force_fail')) {
             return new JsonResponse(
@@ -49,7 +51,7 @@ class ProductController extends AbstractController
         // 1. Deserializacja danych json w obiekt EnquiryDTO
         $lowestPriceEnquiry = $serializer->deserialize($request->getContent(), LowestPriceEnquiry::class, 'json');
 
-        $product = $this->repository->find($id); // TODO obsluga przypadku braku znalezienia produktu
+        $product = $this->repository->findOrFail($id);
 
         $lowestPriceEnquiry->setProduct($product);
 
